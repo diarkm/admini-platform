@@ -5,7 +5,10 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Button
+  Button,
+  Input,
+  Label,
+  FormGroup
 } from "reactstrap"
 import Select from "react-select"
 
@@ -36,6 +39,26 @@ class TransactionEdit extends React.Component {
                 name="status"
                 options={statusOptions}
               />
+            </Col>
+            <Col md="6" sm="12" className="mt-1">
+              <FormGroup>
+                <Label for="value">Сумма</Label>
+                <Input
+                  type="number"
+                  id="value"
+                  placeholder="Сумма"
+                />
+              </FormGroup>
+            </Col>
+            <Col md="6" sm="12" className="mt-1">
+              <FormGroup>
+                <Label for="amount">Количество</Label>
+                <Input
+                  type="number"
+                  id="amount"
+                  placeholder="Количество"
+                />
+              </FormGroup>
             </Col>
             <Col
                 className="d-flex justify-content-end flex-wrap mt-2"
