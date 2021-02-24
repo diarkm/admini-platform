@@ -56,14 +56,8 @@ const data = [
 ]
 
 class UserAccountTab extends React.Component {
-  state = {
-    basicPicker : new Date()
-  }
   render() {
-
-    let { 
-      basicPicker
-    } = this.state
+    const { user, updateUser } = this.props
 
     return (
       <Row>
@@ -71,41 +65,40 @@ class UserAccountTab extends React.Component {
           <Media className="mb-2">
             <Media className="mt-2" body>
               <Media className="font-medium-1 text-bold-600" tag="p" heading>
-                Джон До
+                {user.firstName} {user.lastName}
               </Media>
             </Media>
           </Media>
         </Col>
         <Col sm="12">
-          <Form onSubmit={e => e.preventDefault()}>
+          <Form onSubmit={e => {
+            e.preventDefault()
+            updateUser(e.target)
+          }}>
+            <Input
+              type="hidden"
+              id="user_id"
+              defaultValue={user.id}
+            />
+
             <Row>
               <Col md="6" sm="12">
                 <FormGroup>
-                  <Label for="username">Логин</Label>
+                  <Label for="avatar">Аватар</Label>
                   <Input
-                    type="text"
-                    id="username"
-                    placeholder="Логин"
+                    type="file"
+                    id="avatar"
+                    placeholder="Аватар"
                   />
                 </FormGroup>
               </Col>
               <Col md="6" sm="12">
                 <FormGroup>
-                  <Label for="password">Пароль</Label>
-                  <Input
-                    type="password"
-                    id="password"
-                    placeholder="Пароль"
-                  />
-                </FormGroup>
-              </Col>
-
-              <Col md="6" sm="12">
-                <FormGroup>
-                  <Label for="name">Имя</Label>
+                  <Label for="firstName">Имя</Label>
                   <Input
                     type="text"
-                    id="name"
+                    id="firstName"
+                    defaultValue={user.firstName}
                     placeholder="Имя"
                   />
                 </FormGroup>
@@ -115,8 +108,20 @@ class UserAccountTab extends React.Component {
                   <Label for="lastName">Фамилия</Label>
                   <Input
                     type="text"
-                    id="lasName"
+                    id="lastName"
+                    defaultValue={user.lastName}
                     placeholder="Фамилия"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md="6" sm="12">
+                <FormGroup>
+                  <Label for="login">Логин</Label>
+                  <Input
+                    type="text"
+                    id="login"
+                    defaultValue={user.login}
+                    placeholder="Логин"
                   />
                 </FormGroup>
               </Col>
@@ -124,23 +129,25 @@ class UserAccountTab extends React.Component {
                 <FormGroup>
                   <Label for="email">Почта</Label>
                   <Input
-                    type="text"
+                    type="email"
                     id="email"
+                    defaultValue={user.email}
                     placeholder="Почта"
                   />
                 </FormGroup>
               </Col>
               <Col md="6" sm="12">
                 <FormGroup>
-                  <Label for="sponsor">Спонсор</Label>
+                  <Label for="phoneNumber">Телефон</Label>
                   <Input
                     type="text"
-                    id="sponsor"
-                    placeholder="Спонсор"
+                    id="phoneNumber"
+                    defaultValue={user.phoneNumber}
+                    placeholder="Телефон"
                   />
                 </FormGroup>
               </Col>
-              <Col sm="12">
+              {/* <Col sm="12">
                 <div className="permissions border px-2">
                   <div className="title pt-2 pb-0">
                     <DollarSign size={19} />
@@ -179,10 +186,10 @@ class UserAccountTab extends React.Component {
                     </span>
                     <hr />
                   </div>
-                  <DataTable 
-                    data={data} 
-                    columns={columns} 
-                    noHeader 
+                  <DataTable
+                    data={data}
+                    columns={columns}
+                    noHeader
                     selectableRows
                     selectableRowsComponent={Checkbox}
                     selectableRowsComponentProps={{
@@ -207,7 +214,7 @@ class UserAccountTab extends React.Component {
                     Добавить бонус
                   </Button.Ripple>
                 </div>
-              </Col>
+              </Col> */}
               <Col
                 className="d-flex justify-content-end flex-wrap mt-2"
                 sm="12"

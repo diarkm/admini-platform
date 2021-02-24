@@ -8,10 +8,13 @@ class ApiModule {
     this.tokenStorage = new TokenStorage()
     this.accessToken  = this.tokenStorage.get()
 
+    //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbl9pZCI6NywiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiZXhwIjoxNjE0MjQ1NTYzfQ.p19sXcAshhJWTqATgW54U3ibVZwIc6IrIRXzPCqW-pc
+
     this.client       = axios.create({
       baseURL: apiURL,
       headers: {
-        'Admin-Token': `${this.accessToken}`,
+        'Admin-Token': this.accessToken,
+        Authorization: this.accessToken,
       }
     })
   }
@@ -43,6 +46,66 @@ class ApiModule {
       })
   }
 
+  async getUser (id) {
+    return this.client.get('/admin/users/get/' + id)
+      .then(response => {
+        return response.data
+      })
+      .catch(error => {
+        this.handleError(error)
+      })
+  }
+
+  async addUser (form) {
+    return this.client.post('/user/signup', form)
+      .then(response => {
+        return response.data
+      })
+      .catch(error => {
+        this.handleError(error)
+      })
+  }
+
+  async editUser (form) {
+    return this.client.post('/admin/users/edit', form)
+      .then(response => {
+        return response.data
+      })
+      .catch(error => {
+        this.handleError(error)
+      })
+  }
+
+  async addTransaction (form) {
+    return this.client.post('/admin/transaction/create', form)
+      .then(response => {
+        return response.data
+      })
+      .catch(error => {
+        this.handleError(error)
+      })
+  }
+
+  async editTransaction (form) {
+    return this.client.post('/admin/transaction/edit', form)
+      .then(response => {
+        return response.data
+      })
+      .catch(error => {
+        this.handleError(error)
+      })
+  }
+
+  async getTransaction (id) {
+    return this.client.get(`/admin/transaction/1/${id}`)
+      .then(response => {
+        return response.data
+      })
+      .catch(error => {
+        this.handleError(error)
+      })
+  }
+
   async getTransactions () {
     return this.client.get('/admin/transaction/1')
       .then(response => {
@@ -53,8 +116,8 @@ class ApiModule {
       })
   }
 
-  async getUsers () {
-    return this.client.get('/admin/users/1')
+  async getUsers (page = 1) {
+    return this.client.get('/admin/users/' + page)
       .then(response => {
         return response.data
       })

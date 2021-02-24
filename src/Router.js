@@ -12,10 +12,15 @@ import usersList from "./views/apps/user/list/ListUsers"
 import logsList from "./views/apps/user/list/ListLog"
 import adminList from "./views/apps/user/list/ListAdmin"
 import formsAnswers from "./views/pages/FormsAnswers"
+import ApiModule from "./api/ApiModule"
+
 const transactionList = lazy(() => import("./views/apps/user/list/List"))
 const userEdit = lazy(() => import("./views/apps/user/edit/Edit"))
+const userAdd = lazy(() => import("./views/apps/user/add/User"))
 const adminEdit = lazy(() => import("./views/apps/user/edit/AdminEdit"))
+
 const transactionEdit = lazy(() => import("./views/apps/user/edit/TransactionEdit"))
+const transactionAdd = lazy(() => import("./views/apps/user/add/Transaction"))
 // Route-based code splitting
 const analyticsDashboard = lazy(() =>
   import("./views/pages/Dashboard")
@@ -210,51 +215,65 @@ const mapStateToProps = state => {
 const AppRoute = connect(mapStateToProps)(RouteConfig)
 
 class AppRouter extends React.Component {
+  state = {
+    user: true
+  }
+
+  async componentDidMount () {
+    await new ApiModule().getUserData()
+  }
+
   render() {
+    const { user } = this.state
+
     return (
       // Set the directory path if you are deploying in sub-folder
       <Router history={history}>
         <Switch>
-          <AppRoute exact path="/" component={analyticsDashboard} />
-          <AppRoute exact path="/products" component={productsList} />
-          <AppRoute exact path="/users" component={usersList} />
-          <AppRoute path="/transaction" component={transactionList} />
-          <AppRoute path="/forms" component={formsAnswers} />
-          <AppRoute path="/logs" component={logsList} />
-          <AppRoute path="/admins" component={adminList} />
-          <AppRoute path="/auth" component={Login} fullLayout />
-          <AppRoute path="/userEdit" component={userEdit} />
-          <AppRoute path="/transactionEdit" component={transactionEdit} />
-          <AppRoute path="/adminEdit" component={adminEdit} />
-          <AppRoute
-            path="/charts"
-            component={ecommerceDashboard}
-          />
-          <AppRoute
-            path="/email"
-            exact
-            component={() => <Redirect to="/email/inbox" />}
-          />
-          <AppRoute path="/email/:filter" component={email} />
-          <AppRoute path="/chat" component={chat} />
-          <AppRoute
-            path="/todo"
-            exact
-            component={() => <Redirect to="/todo/all" />}
-          />
-          <AppRoute path="/todo/:filter" component={todo} />
-          <AppRoute path="/calendar" component={calendar} />
-          <AppRoute path="/ecommerce/shop" component={shop} />
-          <AppRoute path="/ecommerce/wishlist" component={wishlist} />
-          <AppRoute
-            path="/ecommerce/product-detail"
-            component={productDetail}
-          />
-          <AppRoute
-            path="/ecommerce/checkout"
-            component={checkout}
-            permission="admin"
-          />
+            <AppRoute path="/auth" component={Login} fullLayout />
+            <AppRoute exact path="/" component={analyticsDashboard} />
+            <AppRoute exact path="/products" component={productsList} />
+            <AppRoute exact path="/users" component={usersList} />
+            <AppRoute path="/transaction" component={transactionList} />
+            <AppRoute path="/forms" component={formsAnswers} />
+            <AppRoute path="/logs" component={logsList} />
+            <AppRoute path="/admins" component={adminList} />
+            <AppRoute path="/userEdit/:id" component={userEdit} />
+            <AppRoute path="/userAdd" component={userAdd} />
+            <AppRoute path="/transactionEdit/:id" component={transactionEdit} />
+            <AppRoute path="/transactionAdd" component={transactionAdd} />
+            <AppRoute path="/adminEdit" component={adminEdit} />
+            <AppRoute
+              path="/charts"
+              component={ecommerceDashboard}
+            />
+            <AppRoute
+              path="/email"
+              exact
+              component={() => <Redirect to="/email/inbox" />}
+            />
+            <AppRoute path="/email/:filter" component={email} />
+            <AppRoute path="/chat" component={chat} />
+            <AppRoute
+              path="/todo"
+              exact
+              component={() => <Redirect to="/todo/all" />}
+            />
+            <AppRoute path="/todo/:filter" component={todo} />
+            <AppRoute path="/calendar" component={calendar} />
+            <AppRoute path="/ecommerce/shop" component={shop} />
+            <AppRoute path="/ecommerce/wishlist" component={wishlist} />
+            <AppRoute
+              path="/ecommerce/product-detail"
+              component={productDetail}
+            />
+            <AppRoute
+              path="/ecommerce/checkout"
+              component={checkout}
+              permission="admin"
+            />
+
+
           <AppRoute path="/data-list/list-view" component={listView} />
           <AppRoute path="/data-list/thumb-view" component={thumbView} />
           <AppRoute path="/ui-element/grid" component={grid} />
@@ -349,7 +368,7 @@ class AppRouter extends React.Component {
             fullLayout
           />
           <AppRoute path="/misc/error/404" component={error404} fullLayout />
-          
+
           <AppRoute
             path="/pages/lock-screen"
             component={lockScreen}

@@ -95,21 +95,23 @@ class TransactionList extends React.Component {
         filter: true,
         width: 150,
         cellRendererFramework: params => {
-          return params.value === 1 ? (
-            <div className="badge badge-pill badge-light-success">
-              {params.value}
-            </div>
-          ) : params.value === -1 ? (
-            <div className="badge badge-pill badge-light-danger">
-              {params.value}
-            </div>
-          ) : params.value === 0 ? (
-            <div className="badge badge-pill badge-light-warning">
-              {params.value}
-            </div>
-          ) : null
+          return <div className="badge badge-pill badge-light-success">
+            {params.value}
+          </div>
+        }
+      },
+      {
+        headerName: "# действие",
+        field: "id",
+        filter: false,
+        width: 150,
+        cellRendererFramework: params => {
+          return <Button.Ripple color="danger" onClick={() => history.push('/transactionEdit/' + params.value)} className="btn-blockmt-2">
+          Изменить
+          </Button.Ripple>
         }
       }
+
     ]
   }
 
@@ -209,7 +211,7 @@ class TransactionList extends React.Component {
                     <Button.Ripple outline color="primary" className="btn-blockmt-2 mr-1">
                     Корзина
                     </Button.Ripple>
-                    <Button.Ripple color="primary" className="btn-blockmt-2">
+                    <Button.Ripple onClick={() => history.push('/transactionAdd')} color="primary" className="btn-blockmt-2">
                     + Добавить заказ
                     </Button.Ripple>
                 </Col>

@@ -103,12 +103,26 @@ class UsersList extends React.Component {
             </div>
           ) : null
         }
+      },
+      {
+        headerName: "# действие",
+        field: "id",
+        filter: false,
+        width: 150,
+        cellRendererFramework: params => {
+          return <Button.Ripple color="danger" onClick={() => history.push('/userEdit/' + params.value)} className="btn-blockmt-2">
+          Изменить
+          </Button.Ripple>
+        }
       }
+
     ]
   }
 
-  async loadUsers () {
-    let users = await new ApiModule().getUsers()
+  async loadUsers (page) {
+    let users = await new ApiModule().getUsers(page)
+
+    console.log(users)
 
     if(users.data) {
       this.setState( {rowData: users.data.collection} )
@@ -116,7 +130,7 @@ class UsersList extends React.Component {
   }
 
   async componentDidMount() {
-    this.loadUsers()
+    this.loadUsers(1)
   }
 
   onGridReady = params => {
@@ -203,7 +217,7 @@ class UsersList extends React.Component {
                     <Button.Ripple outline color="primary" className="btn-blockmt-2 mr-1">
                     Корзина
                     </Button.Ripple>
-                    <Button.Ripple color="primary" className="btn-blockmt-2">
+                    <Button.Ripple onClick={() => history.push('/userAdd')} color="primary" className="btn-blockmt-2">
                     + Добавить пользователя
                     </Button.Ripple>
                 </Col>

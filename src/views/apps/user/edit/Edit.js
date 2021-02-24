@@ -7,23 +7,43 @@ import {
 } from "reactstrap"
 import AccountTab from "./Account"
 import "../../../../assets/scss/pages/users.scss"
+import ApiModule from '../../../../api/ApiModule'
 class UserEdit extends React.Component {
   state = {
-    activeTab: "1"
+    user: null
   }
 
-  toggle = tab => {
-    this.setState({
-      activeTab: tab
-    })
+  async componentDidMount () {
+    const { id } = this.props.match.params
+
+    let user = await new ApiModule().getUser(id)
+
+    if(user.response && user.user) {
+      this.setState(() => ({ user: user.user }))
+    }
   }
+
+  async updateUser (data) {
+    data = new FormData(data)
+
+    let user = await new ApiModule().editUser(data)
+
+    // TODO: вывести уведомление
+    if(user.errors)
+      alert(user.errors)
+
+    console.log(user)
+  }
+
   render() {
+    const { user } = this.state
+
     return (
       <Row>
         <Col sm="12">
           <Card>
             <CardBody className="pt-2">
-              <AccountTab />
+              {user ? <AccountTab updateUser={this.updateUser} user={user} /> : ''}
             </CardBody>
           </Card>
         </Col>

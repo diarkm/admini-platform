@@ -20,56 +20,44 @@ const statusOptions = [
   { value: 3, label: "Отклонено" }
 ]
 
-class TransactionEdit extends React.Component {
-  state = {
-    transaction: null
-  }
+class TransactionAdd extends React.Component {
 
-  async componentDidMount () {
-    const { id } = this.props.match.params
-
-    let trs = await new ApiModule().getTransactions()
-
-    trs = trs.data.collection.filter(t => t.id == id)
-
-    if(trs.length)
-      this.setState(() => ({ transaction: trs[0] }))
-  }
-
-  async editTrans (data) {
-    const { id } = this.props.match.params
-
+  async addTrans (data) {
     let $form = new FormData(data)
-        $form.append('transaction_id', id)
 
-    let trs = await new ApiModule().editTransaction($form)
+    let trs = await new ApiModule().addTransaction($form)
 
     if(trs.response) {
-      alert('Транзакция успешно обновлена')
+      alert('Транзакция успешно добавлен')
     }
   }
 
   render() {
-    const trs = this.state.transaction
-
     return (
       <Card>
         <CardHeader>
-          <h2>Редактировать транзакцию</h2>
+          <h2>Добавить транзакцию</h2>
         </CardHeader>
         <CardBody>
-          {trs ? <form onSubmit={e => {
+          <form onSubmit={e => {
             e.preventDefault()
-            this.editTrans(e.target)
+            this.addTrans(e.target)
           }}><Row>
             <Col sm="12">
-              <Select
+              <FormGroup>
+                <Label for="user_id">ID пользователя</Label>
+                <Input
+                  type="number"
+                  id="user_id"
+                  placeholder="ID пользователя"
+                />
+              </FormGroup>
+              {/* <Select
                 className="React"
                 classNamePrefix="select"
-                defaultValue={trs.status_id}
                 name="status_id"
                 options={statusOptions}
-              />
+              /> */}
             </Col>
             <Col md="6" sm="12" className="mt-1">
               <FormGroup>
@@ -77,7 +65,6 @@ class TransactionEdit extends React.Component {
                 <Input
                   type="number"
                   id="value"
-                  defaultValue={trs.value}
                   placeholder="Сумма"
                 />
               </FormGroup>
@@ -88,7 +75,6 @@ class TransactionEdit extends React.Component {
                 <Input
                   type="number"
                   id="count"
-                  defaultValue={trs.count}
                   placeholder="Количество"
                 />
               </FormGroup>
@@ -102,10 +88,10 @@ class TransactionEdit extends React.Component {
                 </Button.Ripple>
                 <Button.Ripple type={'button'} onClick={() => history.push('/transaction')} color="flat-warning">Вернуть</Button.Ripple>
               </Col>
-          </Row></form> : ''}
+          </Row></form>
         </CardBody>
       </Card>
     )
   }
 }
-export default TransactionEdit
+export default TransactionAdd
