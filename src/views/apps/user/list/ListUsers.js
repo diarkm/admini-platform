@@ -36,63 +36,8 @@ import { history } from "../../../../history"
 import "../../../../assets/scss/plugins/tables/_agGridStyleOverride.scss"
 import "../../../../assets/scss/pages/users.scss"
 import userImg from "../../../../assets/img/portrait/small/avatar-s-11.jpg"
+import ApiModule from '../../../../api/ApiModule'
 
-const data = [
-  {
-    id: "1",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    }, 
-    sponsor: "Referer1",
-    status: "Активирован"
-  },
-  {
-    id: "2",
-    username: {
-      avatar: userImg,
-      name: 'Amber-Rose Mccallum'
-    }, 
-    sponsor: "Referer1",
-    status: "Активирован"
-  },
-  {
-    id: "3",
-    username: {
-      avatar: userImg,
-      name: 'Elise Ho'
-    }, 
-    sponsor: "Referer1",
-    status: "Не активирован"
-  },
-  {
-    id: "4",
-    username: {
-      avatar: userImg,
-      name: 'Soren Rawlings'
-    }, 
-    sponsor: "Referer1",
-    status: "Активирован"
-  },
-  {
-    id: "5",
-    username: {
-      avatar: userImg,
-      name: 'Vicki Heaton'
-    }, 
-    sponsor: "Referer1",
-    status: "Активирован"
-  },
-  {
-    id: "6",
-    username: {
-      avatar: userImg,
-      name: 'Rihanna Aguirre'
-    }, 
-    sponsor: "Referer1",
-    status: "Не активирован"
-  }
-]
 
 class UsersList extends React.Component {
   state = {
@@ -112,7 +57,7 @@ class UsersList extends React.Component {
     searchVal: "",
     columnDefs: [
       {
-        headerName: "ID",
+        headerName: "Id",
         field: "id",
         width: 150,
         filter: true,
@@ -121,8 +66,8 @@ class UsersList extends React.Component {
         headerCheckboxSelection: true
       },
       {
-        headerName: "ФИО",
-        field: "username",
+        headerName: "Логин",
+        field: "login",
         filter: true,
         width: 400,
         cellRendererFramework: params => {
@@ -131,55 +76,48 @@ class UsersList extends React.Component {
               className="d-flex align-items-center cursor-pointer"
               onClick={() => history.push("/userEdit")}
             >
-              <img
-                className="rounded-circle mr-50"
-                src={params.value.avatar}
-                alt=""
-                height="30"
-                width="30"
-              />
-              <span>{params.value.name}</span>
+              <span>{params.value}</span>
             </div>
           )
         }
       },
       {
-        headerName: "Спонсор",
-        field: "sponsor",
+        headerName: "E-mail",
+        field: "email",
         filter: true,
         width: 350
       },
       {
         headerName: "Статус",
-        field: "status",
+        field: "status_id",
         filter: true,
         width: 250,
         cellRendererFramework: params => {
-          return params.value === "Активирован" ? (
+          return params.value === 1 ? (
             <div className="badge badge-pill badge-light-success">
-              {params.value}
+              Активирован
             </div>
-          ) : params.value === "Не активирован" ? (
+          ) : params.value === 0 ? (
             <div className="badge badge-pill badge-light-danger">
-              {params.value}
+              Не активирован
             </div>
           ) : null
         }
       }
     ]
   }
-/*
-  async componentDidMount() {
-    await axios.get("api/users/list").then(response => {
-      let rowData = response.data
-      this.setState({ rowData })
-    })
+
+  async loadUsers () {
+    let users = await new ApiModule().getUsers()
+
+    if(users.data) {
+      this.setState( {rowData: users.data.collection} )
+    }
   }
-*/
-async componentDidMount() {
-  this.setState( {rowData: data} )
-  console.log(this.state.columnDefs)
-}
+
+  async componentDidMount() {
+    this.loadUsers()
+  }
 
   onGridReady = params => {
     this.gridApi = params.api

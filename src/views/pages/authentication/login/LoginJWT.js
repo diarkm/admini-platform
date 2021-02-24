@@ -18,6 +18,7 @@ class LoginJWT extends React.Component {
     e.preventDefault()
     this.props.loginWithJWT(this.state)
   }
+
   render() {
     return (
       <React.Fragment>

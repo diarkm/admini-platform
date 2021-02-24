@@ -19,6 +19,7 @@ import Autocomplete from "../../../components/@vuexy/autoComplete/AutoCompleteCo
 import { useAuth0 } from "../../../authServices/auth0/auth0Service"
 import { history } from "../../../history"
 import { IntlContext } from "../../../utility/context/Internationalization"
+import TokenStorage from '../../../api/TokenStorage'
 
 const handleNavigation = (e, path) => {
   e.preventDefault()
@@ -32,26 +33,12 @@ const UserDropdown = props => {
       <DropdownItem divider />
       <DropdownItem
         tag="a"
-        href="/pages/login"
+        href="/auth"
         onClick={e => {
           e.preventDefault()
-          if (isAuthenticated) {
-            return logout({
-              returnTo: window.location.origin + process.env.REACT_APP_PUBLIC_PATH
-            })
-          } else {
-            const provider = props.loggedInWith
-            if (provider !== null) {
-              if (provider === "jwt") {
-                return props.logoutWithJWT()
-              }
-              if (provider === "firebase") {
-                return props.logoutWithFirebase()
-              }
-            } else {
-              history.push("/pages/login")
-            }
-          }
+
+          new TokenStorage().delete()
+          return window.location.href = '/auth'
 
         }}
       >
@@ -255,7 +242,7 @@ class NavbarUser extends React.PureComponent {
             )
           }}
         </IntlContext.Consumer>
-        
+
         <UncontrolledDropdown
           tag="li"
           className="dropdown-notification nav-item"

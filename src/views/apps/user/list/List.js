@@ -36,42 +36,8 @@ import { history } from "../../../../history"
 import "../../../../assets/scss/plugins/tables/_agGridStyleOverride.scss"
 import "../../../../assets/scss/pages/users.scss"
 import userImg from "../../../../assets/img/portrait/small/avatar-s-11.jpg"
-
-const data = [
-  {
-    id: "1",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    }, 
-    sponsor: "Referer1",
-    date: "6 февраля 2021",
-    amount: "200$",
-    status: "Выполнено"
-  },
-  {
-    id: "2",
-    username: {
-      avatar: userImg,
-      name: 'Rustem Kozhabayev'
-    }, 
-    sponsor: "Referer2",
-    date: "31 января 2021",
-    amount: "7100$",
-    status: "В обработке"
-  },
-  {
-    id: "3",
-    username: {
-      avatar: userImg,
-      name: 'Max Marchenko'
-    }, 
-    sponsor: "Referer3",
-    date: "7 марта 2021",
-    amount: "500$",
-    status: "Отменено"
-  }
-]
+import ApiModule from '../../../../api/ApiModule'
+import { database } from "firebase"
 
 class TransactionList extends React.Component {
   state = {
@@ -100,61 +66,44 @@ class TransactionList extends React.Component {
         headerCheckboxSelection: true
       },
       {
-        headerName: "ФИО",
-        field: "username",
+        headerName: "User_id",
+        field: "user_id",
         filter: true,
-        width: 250,
-        cellRendererFramework: params => {
-          return (
-            <div
-              className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/transactionEdit")}
-            >
-              <img
-                className="rounded-circle mr-50"
-                src={params.value.avatar}
-                alt=""
-                height="30"
-                width="30"
-              />
-              <span>{params.value.name}</span>
-            </div>
-          )
-        }
-      },
-      {
-        headerName: "Спонсор",
-        field: "sponsor",
-        filter: true,
-        width: 250
+        width: 200
       },
       {
         headerName: "Дата",
-        field: "date",
+        field: "created_at",
         filter: true,
         width: 200
       },
       {
         headerName: "Сумма",
-        field: "amount",
+        field: "value",
+        filter: true,
+        width: 200
+      },
+      {
+        headerName: "Кол-во",
+        field: "count",
         filter: true,
         width: 200
       },
       {
         headerName: "Статус",
-        field: "status",
+        field: "status_id",
         filter: true,
         width: 150,
         cellRendererFramework: params => {
-          return params.value === "Выполнено" ? (
+          return params.value === 1 ? (
             <div className="badge badge-pill badge-light-success">
               {params.value}
             </div>
-          ) : params.value === "Отменено" ? (
+          ) : params.value === -1 ? (
             <div className="badge badge-pill badge-light-danger">
               {params.value}
             </div>
-          ) : params.value === "В обработке" ? (
+          ) : params.value === 0 ? (
             <div className="badge badge-pill badge-light-warning">
               {params.value}
             </div>
@@ -163,18 +112,18 @@ class TransactionList extends React.Component {
       }
     ]
   }
-/*
+
   async componentDidMount() {
-    await axios.get("api/users/list").then(response => {
-      let rowData = response.data
-      this.setState({ rowData })
-    })
+    let data = await new ApiModule().getTransactions()
+
+    if(data.data) {
+      data = data.data.collection
+    } else {
+      data = []
+    }
+
+    this.setState( {rowData: data} )
   }
-*/
-async componentDidMount() {
-  this.setState( {rowData: data} )
-  console.log(this.state.columnDefs)
-}
 
   onGridReady = params => {
     this.gridApi = params.api

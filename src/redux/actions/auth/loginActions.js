@@ -4,11 +4,14 @@ import "firebase/auth"
 import "firebase/database"
 import axios from "axios"
 import { config } from "../../../authServices/firebase/firebaseConfig"
+import TokenStorage from '../../../api/TokenStorage'
 
 // Init firebase if not already initialized
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
+
+axios.defaults.baseURL = 'https://cabinet.giq-group.com/back/public'
 
 let firebaseAuth = firebase.auth()
 
@@ -182,20 +185,18 @@ export const loginWithGithub = () => {
 export const loginWithJWT = user => {
   return dispatch => {
     axios
-      .post("/api/authenticate/login/user", {
-        email: user.email,
+      .post("/admin/login", {
+        login: user.email,
         password: user.password
       })
       .then(response => {
         var loggedInUser
 
         if (response.data) {
-          loggedInUser = response.data.user
+          loggedInUser = response.data.token
 
-          dispatch({
-            type: "LOGIN_WITH_JWT",
-            payload: { loggedInUser, loggedInWith: "jwt" }
-          })
+
+          new TokenStorage().write(loggedInUser)
 
           history.push("/")
         }
