@@ -8,15 +8,15 @@ class ApiModule {
     this.tokenStorage = new TokenStorage()
     this.accessToken  = this.tokenStorage.get()
 
-    //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbl9pZCI6NywiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiZXhwIjoxNjE0MjQ1NTYzfQ.p19sXcAshhJWTqATgW54U3ibVZwIc6IrIRXzPCqW-pc
-
-    this.client       = axios.create({
+    const cfg = {
       baseURL: apiURL,
       headers: {
         'Admin-Token': this.accessToken,
         Authorization: this.accessToken,
       }
-    })
+    }
+
+    this.client       = axios.create(cfg)
   }
 
   getFormData(values) {
@@ -35,10 +35,10 @@ class ApiModule {
    */
   async getUserData() {
     console.log("ApiModule.getUserdata()");
-    return this.client.get('/user')
+    return this.client.get('/admin/account/get')
       .then(response => {
-        window.USER = response.data
-        return response.data
+        window.USER = response.data.admin
+        return response.data.admin
       })
       .catch(error => {
         window.USER = null
@@ -51,9 +51,6 @@ class ApiModule {
       .then(response => {
         return response.data
       })
-      .catch(error => {
-        this.handleError(error)
-      })
   }
 
   async addUser (form) {
@@ -61,8 +58,12 @@ class ApiModule {
       .then(response => {
         return response.data
       })
-      .catch(error => {
-        this.handleError(error)
+  }
+
+  async confirmUser (user_id = 0) {
+    return this.client.post('/admin/users/confirm/' + user_id)
+      .then(response => {
+        return response.data
       })
   }
 
@@ -71,18 +72,12 @@ class ApiModule {
       .then(response => {
         return response.data
       })
-      .catch(error => {
-        this.handleError(error)
-      })
   }
 
   async addTransaction (form) {
     return this.client.post('/admin/transaction/create', form)
       .then(response => {
         return response.data
-      })
-      .catch(error => {
-        this.handleError(error)
       })
   }
 
@@ -91,18 +86,12 @@ class ApiModule {
       .then(response => {
         return response.data
       })
-      .catch(error => {
-        this.handleError(error)
-      })
   }
 
   async getTransaction (id) {
     return this.client.get(`/admin/transaction/1/${id}`)
       .then(response => {
         return response.data
-      })
-      .catch(error => {
-        this.handleError(error)
       })
   }
 
@@ -111,18 +100,12 @@ class ApiModule {
       .then(response => {
         return response.data
       })
-      .catch(error => {
-        this.handleError(error)
-      })
   }
 
   async getUsers (page = 1) {
     return this.client.get('/admin/users/' + page)
       .then(response => {
         return response.data
-      })
-      .catch(error => {
-        this.handleError(error)
       })
   }
 

@@ -12,7 +12,7 @@ import NavbarUser from "./NavbarUser"
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg"
 
 const UserName = props => {
-  let username = ""
+  let username = window.USER ? window.USER.login : ''
   if (props.userdata !== undefined) {
     username = props.userdata.name
   } else if (props.user.login.values !== undefined) {
@@ -23,8 +23,6 @@ const UserName = props => {
     ) {
       username = props.user.login.values.loggedInUser.name
     }
-  } else {
-    username = "John Doe"
   }
 
   return username
@@ -86,7 +84,7 @@ const ThemeNavbar = props => {
                   props.user.login.values !== undefined &&
                   props.user.login.values.loggedInWith !== "jwt" &&
                   props.user.login.values.photoUrl
-                    ? props.user.login.values.photoUrl 
+                    ? props.user.login.values.photoUrl
                     : user !== undefined && user.picture ? user.picture
                     : userImg
                 }

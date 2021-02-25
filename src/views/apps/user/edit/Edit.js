@@ -32,7 +32,9 @@ class UserEdit extends React.Component {
     if(user.errors)
       alert(user.errors)
 
-    console.log(user)
+    if(user.response) {
+      alert('Пользователь успешно обновлен!')
+    }
   }
 
   render() {

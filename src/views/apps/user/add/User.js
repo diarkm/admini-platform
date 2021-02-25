@@ -27,7 +27,13 @@ class UserAdd extends React.Component {
     if(user.errors)
       alert(user.errors)
 
-    console.log(user)
+    if(user.response) {
+      let userConfirm = await new ApiModule().confirmUser(user.user_id)
+
+      if(userConfirm.response) {
+        alert('Пользователь успешно добавлен и подтвержден!')
+      }
+    }
   }
 
   render() {

@@ -75,7 +75,10 @@ class TransactionList extends React.Component {
         headerName: "Дата",
         field: "created_at",
         filter: true,
-        width: 200
+        width: 200,
+        cellRendererFramework: params => {
+          return params.value.replace(/\.(.*)/,'').replace('T', ' ')
+        }
       },
       {
         headerName: "Сумма",
@@ -91,13 +94,21 @@ class TransactionList extends React.Component {
       },
       {
         headerName: "Статус",
-        field: "status_id",
+        field: "status",
         filter: true,
         width: 150,
         cellRendererFramework: params => {
-          return <div className="badge badge-pill badge-light-success">
-            {params.value}
-          </div>
+          let $name = params.value.name.toUpperCase()
+
+          if($name === "ОДОБРЕНО") {
+            return <div className="badge badge-pill badge-light-success">
+              {params.value.name}
+            </div>
+          } else if ($name === 'В ПРОЦЕССЕ') {
+            return <div className="badge badge-pill badge-light-danger">
+              {params.value.name}
+            </div>
+          }
         }
       },
       {

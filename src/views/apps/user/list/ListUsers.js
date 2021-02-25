@@ -89,19 +89,27 @@ class UsersList extends React.Component {
       },
       {
         headerName: "Статус",
-        field: "status_id",
+        field: "status",
         filter: true,
         width: 250,
         cellRendererFramework: params => {
-          return params.value === 1 ? (
-            <div className="badge badge-pill badge-light-success">
-              Активирован
+          if(params.value) {
+            let $name = params.value.name.toUpperCase()
+
+            return $name === "ОДОБРЕНО" ? (
+              <div className="badge badge-pill badge-light-success">
+                Активирован
+              </div>
+            ) : $name === "В ПРОЦЕССЕ" ? (
+              <div className="badge badge-pill badge-light-danger">
+                Не активирован
+              </div>
+            ) : null
+          } else {
+            return <div className="badge badge-pill badge-light">
+              Статуса нет
             </div>
-          ) : params.value === 0 ? (
-            <div className="badge badge-pill badge-light-danger">
-              Не активирован
-            </div>
-          ) : null
+          }
         }
       },
       {

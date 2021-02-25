@@ -78,6 +78,7 @@ class TransactionEdit extends React.Component {
                   type="number"
                   id="value"
                   defaultValue={trs.value}
+                  name={'value'}
                   placeholder="Сумма"
                 />
               </FormGroup>
@@ -89,6 +90,7 @@ class TransactionEdit extends React.Component {
                   type="number"
                   id="count"
                   defaultValue={trs.count}
+                  name={'count'}
                   placeholder="Количество"
                 />
               </FormGroup>

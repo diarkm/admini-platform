@@ -198,7 +198,7 @@ export const loginWithJWT = user => {
 
           new TokenStorage().write(loggedInUser)
 
-          history.push("/")
+          window.location.href = '/'
         }
       })
       .catch(err => console.log(err))

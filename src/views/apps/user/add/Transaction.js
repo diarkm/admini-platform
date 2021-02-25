@@ -49,6 +49,7 @@ class TransactionAdd extends React.Component {
                 <Input
                   type="number"
                   id="user_id"
+                  name={'user_id'}
                   placeholder="ID пользователя"
                 />
               </FormGroup>
@@ -65,6 +66,7 @@ class TransactionAdd extends React.Component {
                 <Input
                   type="number"
                   id="value"
+                  name={'value'}
                   placeholder="Сумма"
                 />
               </FormGroup>
@@ -75,6 +77,7 @@ class TransactionAdd extends React.Component {
                 <Input
                   type="number"
                   id="count"
+                  name={'count'}
                   placeholder="Количество"
                 />
               </FormGroup>

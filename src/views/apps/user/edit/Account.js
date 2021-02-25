@@ -12,6 +12,7 @@ import {
 import { DollarSign, Check } from "react-feather"
 import DataTable from "react-data-table-component"
 import Checkbox from "../../../../components/@vuexy/checkbox/CheckboxesVuexy"
+import { history } from "../../../../history"
 
 
 const columns = [
@@ -79,6 +80,7 @@ class UserAccountTab extends React.Component {
               type="hidden"
               id="user_id"
               defaultValue={user.id}
+              name={'user_id'}
             />
 
             <Row>
@@ -88,6 +90,7 @@ class UserAccountTab extends React.Component {
                   <Input
                     type="file"
                     id="avatar"
+                    name={'avatar'}
                     placeholder="Аватар"
                   />
                 </FormGroup>
@@ -99,6 +102,7 @@ class UserAccountTab extends React.Component {
                     type="text"
                     id="firstName"
                     defaultValue={user.firstName}
+                    name={'firstName'}
                     placeholder="Имя"
                   />
                 </FormGroup>
@@ -109,6 +113,7 @@ class UserAccountTab extends React.Component {
                   <Input
                     type="text"
                     id="lastName"
+                    name={'lastName'}
                     defaultValue={user.lastName}
                     placeholder="Фамилия"
                   />
@@ -121,6 +126,7 @@ class UserAccountTab extends React.Component {
                     type="text"
                     id="login"
                     defaultValue={user.login}
+                    name={'login'}
                     placeholder="Логин"
                   />
                 </FormGroup>
@@ -131,6 +137,7 @@ class UserAccountTab extends React.Component {
                   <Input
                     type="email"
                     id="email"
+                    name={'email'}
                     defaultValue={user.email}
                     placeholder="Почта"
                   />
@@ -142,6 +149,7 @@ class UserAccountTab extends React.Component {
                   <Input
                     type="text"
                     id="phoneNumber"
+                    name={'phoneNumber'}
                     defaultValue={user.phoneNumber}
                     placeholder="Телефон"
                   />
@@ -222,7 +230,7 @@ class UserAccountTab extends React.Component {
                 <Button.Ripple className="mr-1" color="primary">
                   Сохранить
                 </Button.Ripple>
-                <Button.Ripple color="flat-warning">Вернуть</Button.Ripple>
+                <Button.Ripple onClick={() => history.push('/users')} color="flat-warning">Вернуть</Button.Ripple>
               </Col>
             </Row>
           </Form>
