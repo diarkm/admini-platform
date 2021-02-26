@@ -77,7 +77,7 @@ class TransactionEdit extends React.Component {
                 <Input
                   type="number"
                   id="value"
-                  defaultValue={trs.value}
+                  defaultValue={parseInt(trs.value)}
                   name={'value'}
                   placeholder="Сумма"
                 />
