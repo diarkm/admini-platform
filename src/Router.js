@@ -252,7 +252,7 @@ class AppRouter extends React.Component {
           <AppRoute path="/logs" component={AuthGuardComponent(logsList)} />
           <AppRoute path="/admins" component={AuthGuardComponent(adminList)} />
           <AppRoute path="/userEdit/:id" component={AuthGuardComponent(userEdit)} />
-          <AppRoute path="/userAdd" component={AuthGuardComponent(userEdit)} />
+          <AppRoute path="/userAdd" component={AuthGuardComponent(userAdd)} />
           <AppRoute path="/transactionEdit/:id" component={AuthGuardComponent(transactionEdit)} />
           <AppRoute path="/transactionAdd" component={AuthGuardComponent(transactionAdd)} />
           <AppRoute path="/adminEdit" component={AuthGuardComponent(adminEdit)} />
