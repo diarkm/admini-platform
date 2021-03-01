@@ -41,7 +41,7 @@ import ApiModule from '../../../../api/ApiModule'
 
 class UsersList extends React.Component {
   state = {
-    rowData: null,
+    rowData: [],
     pageSize: 20,
     isVisible: true,
     reload: false,
@@ -127,18 +127,62 @@ class UsersList extends React.Component {
     ]
   }
 
-  async loadUsers (page) {
-    let users = await new ApiModule().getUsers(page)
+  async loadUsers (page, event) {
+    let data = await new ApiModule().getUsers(page)
 
-    console.log(users)
+    /**
+     * PAGINATION
+     */
+    let pageSize = data.data.collection.length
+    if(data.data) {
+      let newData = this.state.rowData,
+          templateItem = data.data.collection[0]
 
-    if(users.data) {
-      this.setState( {rowData: users.data.collection} )
+      let tempTemplateItem = Object.assign({}, templateItem)
+
+      Object.keys(tempTemplateItem).forEach(itemKey => {
+        if(typeof tempTemplateItem[itemKey] == "string" || typeof tempTemplateItem[itemKey] == "number") {
+          tempTemplateItem[itemKey] = '...'
+        }
+      })
+
+      // получаем текущий виртуальный индекс
+      let currentIndex = (data.data.page*this.state.pageSize) - this.state.pageSize
+
+      if(page <= 1 && !this.initedRows) {
+        // Создаем липовые данные
+        for(let i = 0; i < data.data.pages*pageSize; i++) {
+          newData.push(tempTemplateItem)
+        }
+
+        this.initedRows = true
+      }
+
+      let j = 0;
+      for(let i = currentIndex; i < currentIndex+pageSize; i++) {
+        newData[i] = data.data.collection[j]
+        j++
+      }
+
+      data.data.collection = newData
+    }
+    /** /PAGINATION */
+
+    if(data.data) {
+      data = data.data.collection
+    } else {
+      data = []
+    }
+
+    if(event) {
+      event.api.setRowData(data)
+    } else {
+      this.setState({rowData: data, pageSize})
     }
   }
 
   async componentDidMount() {
-    this.loadUsers(1)
+    this.loadUsers(1, null)
   }
 
   onGridReady = params => {
@@ -277,7 +321,7 @@ class UsersList extends React.Component {
                     />
                   </div>
                 </div>
-                {this.state.rowData !== null ? (
+                {this.state.rowData.length ? (
                   <ContextLayout.Consumer>
                     {context => (
                       <AgGridReact
@@ -290,9 +334,15 @@ class UsersList extends React.Component {
                         colResizeDefault={"shift"}
                         animateRows={true}
                         floatingFilter={true}
+
                         pagination={true}
                         pivotPanelShow="always"
                         paginationPageSize={pageSize}
+                        onPaginationChanged={event => {
+                          if(event.newPage)
+                            this.loadUsers(event.api.paginationProxy.currentPage + 1, event)
+                        }}
+
                         resizable={true}
                         enableRtl={context.state.direction === "rtl"}
                       />

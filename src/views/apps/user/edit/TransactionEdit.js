@@ -28,11 +28,9 @@ class TransactionEdit extends React.Component {
   async componentDidMount () {
     const { id } = this.props.match.params
 
-    let trs = await new ApiModule().getTransactions()
+    let trs = await new ApiModule().getTransaction(id)
 
-    trs = trs.data.collection.filter(t => t.id == id)
-
-    if(trs.length)
+    if(trs.data.collection)
       this.setState(() => ({ transaction: trs[0] }))
   }
 

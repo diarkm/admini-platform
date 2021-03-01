@@ -41,7 +41,7 @@ import { database } from "firebase"
 
 class TransactionList extends React.Component {
   state = {
-    rowData: null,
+    rowData: [],
     pageSize: 20,
     isVisible: true,
     reload: false,
@@ -77,7 +77,10 @@ class TransactionList extends React.Component {
         filter: true,
         width: 200,
         cellRendererFramework: params => {
-          return params.value.replace(/\.(.*)/,'').replace('T', ' ')
+          if(params.value)
+            return params.value.replace(/\.(.*)/,'').replace('T', ' ')
+
+          return ''
         }
       },
       {
@@ -98,17 +101,21 @@ class TransactionList extends React.Component {
         filter: true,
         width: 150,
         cellRendererFramework: params => {
-          let $name = params.value.name.toUpperCase()
+          if(params.value) {
+            let $name = params.value.name.toUpperCase()
 
-          if($name === "ОДОБРЕНО") {
-            return <div className="badge badge-pill badge-light-success">
-              {params.value.name}
-            </div>
-          } else if ($name === 'В ПРОЦЕССЕ') {
-            return <div className="badge badge-pill badge-light-danger">
-              {params.value.name}
-            </div>
+            if($name === "ОДОБРЕНО") {
+              return <div className="badge badge-pill badge-light-success">
+                {params.value.name}
+              </div>
+            } else if ($name === 'В ПРОЦЕССЕ') {
+              return <div className="badge badge-pill badge-light-danger">
+                {params.value.name}
+              </div>
+            }
           }
+
+          return ''
         }
       },
       {
@@ -117,17 +124,59 @@ class TransactionList extends React.Component {
         filter: false,
         width: 150,
         cellRendererFramework: params => {
-          return <Button.Ripple color="danger" onClick={() => history.push('/transactionEdit/' + params.value)} className="btn-blockmt-2">
-          Изменить
-          </Button.Ripple>
+          if(params.value) {
+            return <Button.Ripple color="danger" onClick={() => history.push('/transactionEdit/' + params.value)} className="btn-blockmt-2">
+                Изменить
+            </Button.Ripple>
+          }
+
+          return ''
         }
       }
 
     ]
   }
 
-  async componentDidMount() {
-    let data = await new ApiModule().getTransactions()
+  async getListData (page = 1, event) {
+    let data = await new ApiModule().getTransactions(page)
+
+    /**
+     * PAGINATION
+     */
+    let pageSize = data.data.collection.length
+    if(data.data) {
+      let newData = this.state.rowData,
+          templateItem = data.data.collection[0]
+
+      let tempTemplateItem = Object.assign({}, templateItem)
+
+      Object.keys(tempTemplateItem).forEach(itemKey => {
+        if(typeof tempTemplateItem[itemKey] == "string" || typeof tempTemplateItem[itemKey] == "number") {
+          tempTemplateItem[itemKey] = '...'
+        }
+      })
+
+      // получаем текущий виртуальный индекс
+      let currentIndex = (data.data.page*this.state.pageSize) - this.state.pageSize
+
+      if(page <= 1 && !this.initedRows) {
+        // Создаем липовые данные
+        for(let i = 0; i < data.data.pages*pageSize; i++) {
+          newData.push(tempTemplateItem)
+        }
+
+        this.initedRows = true
+      }
+
+      let j = 0;
+      for(let i = currentIndex; i < currentIndex+pageSize; i++) {
+        newData[i] = data.data.collection[j]
+        j++
+      }
+
+      data.data.collection = newData
+    }
+    /** /PAGINATION */
 
     if(data.data) {
       data = data.data.collection
@@ -135,7 +184,15 @@ class TransactionList extends React.Component {
       data = []
     }
 
-    this.setState( {rowData: data} )
+    if(event) {
+      event.api.setRowData(data)
+    } else {
+      this.setState({rowData: data, pageSize})
+    }
+  }
+
+  async componentDidMount() {
+    this.getListData()
   }
 
   onGridReady = params => {
@@ -209,6 +266,7 @@ class TransactionList extends React.Component {
 
   render() {
     const { rowData, columnDefs, defaultColDef, pageSize } = this.state
+
     return (
       <Row className="app-user-list">
         <Col sm="12">
@@ -274,7 +332,7 @@ class TransactionList extends React.Component {
                     />
                   </div>
                 </div>
-                {this.state.rowData !== null ? (
+                {this.state.rowData.length ? (
                   <ContextLayout.Consumer>
                     {context => (
                       <AgGridReact
@@ -287,10 +345,16 @@ class TransactionList extends React.Component {
                         colResizeDefault={"shift"}
                         animateRows={true}
                         floatingFilter={true}
-                        pagination={true}
                         pivotPanelShow="always"
                         paginationPageSize={pageSize}
                         resizable={true}
+
+                        pagination={true}
+                        onPaginationChanged={event => {
+                          if(event.newPage)
+                            this.getListData(event.api.paginationProxy.currentPage + 1, event)
+                        }}
+
                         enableRtl={context.state.direction === "rtl"}
                       />
                     )}
