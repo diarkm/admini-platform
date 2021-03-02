@@ -30,8 +30,8 @@ class TransactionEdit extends React.Component {
 
     let trs = await new ApiModule().getTransaction(id)
 
-    if(trs.data.collection)
-      this.setState(() => ({ transaction: trs[0] }))
+    if(trs.transaction && trs.response)
+      this.setState(() => ({ transaction: trs.transaction }))
   }
 
   async editTrans (data) {

@@ -89,7 +89,7 @@ class ApiModule {
   }
 
   async getTransaction (id) {
-    return this.client.get(`/admin/transaction/1/${id}`)
+    return this.client.get(`/admin/transaction/get/${id}`)
       .then(response => {
         return response.data
       })
