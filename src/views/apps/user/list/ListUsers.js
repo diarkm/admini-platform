@@ -71,12 +71,15 @@ class UsersList extends React.Component {
         filter: true,
         width: 400,
         cellRendererFramework: params => {
+          let user = this.state.rowData.filter(item => item.login === params.value)
+              user = user.length ? user[0] : ''
+              user = user ? user.firstName + ' ' + user.lastName : ''
+
           return (
             <div
               className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/userEdit")}
             >
-              <span>{params.value}</span>
+              <span>{user}, @{params.value}</span>
             </div>
           )
         }
