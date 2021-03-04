@@ -105,7 +105,7 @@ class ListAdmin extends React.Component {
           return (
             <div
               className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/1/2/adminEdit")}
+              onClick={() => history.push("/adminEdit")}
             >
               <img
                 className="rounded-circle mr-50"

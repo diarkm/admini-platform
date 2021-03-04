@@ -111,7 +111,7 @@ class ListLog extends React.Component {
           return (
             <div
               className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/1/2/app/user/edit")}
+              onClick={() => history.push("/app/user/edit")}
             >
               <img
                 className="rounded-circle mr-50"

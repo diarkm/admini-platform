@@ -198,7 +198,7 @@ export const loginWithJWT = user => {
 
           new TokenStorage().write(loggedInUser)
 
-          window.location.href = '/1/2'
+          window.location.href = '/'
         }
       })
       .catch(err => console.log(err))

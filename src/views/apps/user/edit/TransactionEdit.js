@@ -100,7 +100,7 @@ class TransactionEdit extends React.Component {
                 <Button.Ripple className="mr-1" color="primary">
                   Сохранить
                 </Button.Ripple>
-                <Button.Ripple type={'button'} onClick={() => history.push('/1/2/transaction')} color="flat-warning">Вернуть</Button.Ripple>
+                <Button.Ripple type={'button'} onClick={() => history.push('/transaction')} color="flat-warning">Вернуть</Button.Ripple>
               </Col>
           </Row></form> : ''}
         </CardBody>

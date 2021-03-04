@@ -6,7 +6,7 @@ const navigationConfig = [
     title: "Консоль",
     type: "item",
     icon: <Icon.Home size={20} />,
-    navLink: "/1/2/"
+    navLink: "/"
   },
   {
     type: "groupHeader",
@@ -18,7 +18,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.FileText size={20} />,
     permissions: ["admin", "editor"],
-    navLink: "/1/2/charts"
+    navLink: "/charts"
   },
   {
     id: "transaction",
@@ -26,7 +26,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.ShoppingCart size={20} />,
     permissions: ["admin", "editor"],
-    navLink: "/1/2/transaction"
+    navLink: "/transaction"
   },
   {
     id: "products",
@@ -34,7 +34,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.FileText size={20} />,
     permissions: ["admin", "editor"],
-    navLink: "/1/2/products"
+    navLink: "/products"
   },
   {
     id: "forms",
@@ -42,7 +42,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.FileText size={20} />,
     permissions: ["admin", "editor"],
-    navLink: "/1/2/forms"
+    navLink: "/forms"
   },
   {
     id: "users",
@@ -50,7 +50,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.User size={20} />,
     permissions: ["admin", "editor"],
-    navLink: "/1/2/users"
+    navLink: "/users"
   },
   {
     id: "logs",
@@ -58,7 +58,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.FileText size={20} />,
     permissions: ["admin"],
-    navLink: "/1/2/logs"
+    navLink: "/logs"
   },
   {
     id: "admins",
@@ -66,7 +66,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.FileText size={20} />,
     permissions: ["admin"],
-    navLink: "/1/2/admins"
+    navLink: "/admins"
   },
   {
     id: "settings",
@@ -74,7 +74,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.User size={20} />,
     permissions: ["admin"],
-    navLink: "/1/2/settings"
+    navLink: "/settings"
   },
 ]
 
