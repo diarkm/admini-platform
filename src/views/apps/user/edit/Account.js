@@ -13,7 +13,7 @@ import { DollarSign, Check } from "react-feather"
 import DataTable from "react-data-table-component"
 import Checkbox from "../../../../components/@vuexy/checkbox/CheckboxesVuexy"
 import { history } from "../../../../history"
-
+import ApiModule from '../../../../api/ApiModule'
 
 const columns = [
   {
@@ -57,8 +57,14 @@ const data = [
 ]
 
 class UserAccountTab extends React.Component {
+  state = {
+    showConfirmed: true
+  }
+
   render() {
     const { user, updateUser } = this.props
+
+    console.log(user)
 
     return (
       <Row>
@@ -74,7 +80,14 @@ class UserAccountTab extends React.Component {
         <Col sm="12">
           <Form onSubmit={e => {
             e.preventDefault()
-            updateUser(e.target)
+            let $form = e.target
+
+            if($form.reqs) {
+              let reqs = $form.reqs.value
+              new ApiModule().updateReqs(reqs, user.reqs.id)
+            }
+
+            updateUser($form)
           }}>
             <Input
               type="hidden"
@@ -155,6 +168,35 @@ class UserAccountTab extends React.Component {
                   />
                 </FormGroup>
               </Col>
+
+              {user.reqs.id > 0 && <Col md="6" sm="12">
+                <FormGroup>
+                  <Label for="reqs">Реквизиты</Label>
+                  <Input
+                    type="text"
+                    id="reqs"
+                    name={'reqs'}
+                    defaultValue={user.reqs.wallet}
+                    placeholder="Реквизиты"
+                  />
+                </FormGroup>
+              </Col>}
+
+              {(user.confirmed <= 0 && this.state.showConfirmed) && <Col md="6" sm="12">
+                <FormGroup>
+                  <Button.Ripple onClick={async () => {
+                    let userConfirm = await new ApiModule().confirmUser(user.id)
+
+                    if(userConfirm.response) {
+                      alert('Пользователь успешно подтвержден!')
+                      this.setState(() => ({ showConfirmed: false }))
+                    }
+                  }} className="mr-1" type={'button'} color="success">
+                    Подтвердить
+                  </Button.Ripple>
+                </FormGroup>
+              </Col>}
+
               {/* <Col sm="12">
                 <div className="permissions border px-2">
                   <div className="title pt-2 pb-0">
@@ -230,7 +272,7 @@ class UserAccountTab extends React.Component {
                 <Button.Ripple className="mr-1" color="primary">
                   Сохранить
                 </Button.Ripple>
-                <Button.Ripple onClick={() => history.push('/users')} color="flat-warning">Вернуть</Button.Ripple>
+                <Button.Ripple onClick={() => history.push('/1/2/users')} color="flat-warning">Вернуть</Button.Ripple>
               </Col>
             </Row>
           </Form>

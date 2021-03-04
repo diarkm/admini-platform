@@ -43,7 +43,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Diar Kundakbaev'
-    }, 
+    },
     date:"23 февраля 2021",
     changes: "Изменил счет пользователя «Partner1»"
   },
@@ -52,7 +52,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Diar Kundakbaev'
-    }, 
+    },
     date:"23 февраля 2021",
     changes: "Изменил товар «Курс по финансовой грамотности»"
   },
@@ -61,7 +61,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Diar Kundakbaev'
-    }, 
+    },
     date:"23 февраля 2021",
     changes: "Изменил имя пользователя «Partner2»"
   },
@@ -70,7 +70,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Diar Kundakbaev'
-    }, 
+    },
     date:"23 февраля 2021",
     changes: "Изменил платежные реквизиты пользователя «Partner1»"
   },
@@ -111,7 +111,7 @@ class ListLog extends React.Component {
           return (
             <div
               className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/app/user/edit")}
+              onClick={() => history.push("/1/2/app/user/edit")}
             >
               <img
                 className="rounded-circle mr-50"

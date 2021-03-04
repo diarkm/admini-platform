@@ -7,12 +7,12 @@ export default class TokenStorage
             exp += 3600 * 24 * 6 * 1000;
         }
 
-        localStorage.setItem('token', JSON.stringify({token: token, exp: exp}));
+        localStorage.setItem('admin_token', JSON.stringify({token: token, exp: exp}));
     }
 
     isValid()
     {
-        let token = localStorage.getItem('token');
+        let token = localStorage.getItem('admin_token');
         if (token == null)
             return false;
 
@@ -20,7 +20,7 @@ export default class TokenStorage
         let now = new Date().getTime();
         if (now > token.exp)
         {
-            localStorage.removeItem('token');
+            localStorage.removeItem('admin_token');
             return false;
         }
 
@@ -30,7 +30,7 @@ export default class TokenStorage
     get()
     {
         if (this.isValid())
-            return JSON.parse(localStorage.getItem('token')).token;
+            return JSON.parse(localStorage.getItem('admin_token')).token;
         else return null;
     }
 

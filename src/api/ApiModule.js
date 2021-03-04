@@ -46,6 +46,21 @@ class ApiModule {
       })
   }
 
+  async updateReqs (wallet, wallet_id) {
+    return this.client.post('/admin/users/wallet/edit', {
+      wallet, wallet_id
+    }).then(response => {
+      return response.data
+    })
+  }
+
+  async getReqsUser (id) {
+    return this.client.get('/admin/users/wallet/get/' + id)
+      .then(response => {
+        return response.data
+      })
+  }
+
   async getUser (id) {
     return this.client.get('/admin/users/get/' + id)
       .then(response => {

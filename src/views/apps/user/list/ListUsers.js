@@ -121,7 +121,7 @@ class UsersList extends React.Component {
         filter: false,
         width: 150,
         cellRendererFramework: params => {
-          return <Button.Ripple color="danger" onClick={() => history.push('/userEdit/' + params.value)} className="btn-blockmt-2">
+          return <Button.Ripple color="danger" onClick={() => history.push('/1/2/userEdit/' + params.value)} className="btn-blockmt-2">
           Изменить
           </Button.Ripple>
         }
@@ -272,7 +272,7 @@ class UsersList extends React.Component {
                     <Button.Ripple outline color="primary" className="btn-blockmt-2 mr-1">
                     Корзина
                     </Button.Ripple>
-                    <Button.Ripple onClick={() => history.push('/userAdd')} color="primary" className="btn-blockmt-2">
+                    <Button.Ripple onClick={() => history.push('/1/2/userAdd')} color="primary" className="btn-blockmt-2">
                     + Добавить пользователя
                     </Button.Ripple>
                 </Col>

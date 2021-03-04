@@ -38,7 +38,7 @@ const UserDropdown = props => {
           e.preventDefault()
 
           new TokenStorage().delete()
-          return window.location.href = '/auth'
+          return window.location.href = '/1/2/auth'
 
         }}
       >

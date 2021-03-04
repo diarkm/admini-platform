@@ -43,7 +43,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Diar Kundakbaev'
-    }, 
+    },
     email: "kundakbaev.d@gmail.com",
     role: "Главный администратор",
     status: "Активен"
@@ -53,7 +53,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Rustem Kozhabayev'
-    }, 
+    },
     email: "rus.k.1996@gmail.com",
     role: "Менеджер",
     status: "Неактивен"
@@ -63,7 +63,7 @@ const data = [
     username: {
       avatar: userImg,
       name: 'Diar Kundakbaev'
-    }, 
+    },
     email: "maxmail0000@gmail.com",
     role: "Менеджер",
     status: "Активен"
@@ -105,7 +105,7 @@ class ListAdmin extends React.Component {
           return (
             <div
               className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/adminEdit")}
+              onClick={() => history.push("/1/2/adminEdit")}
             >
               <img
                 className="rounded-circle mr-50"
