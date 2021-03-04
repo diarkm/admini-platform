@@ -234,7 +234,7 @@ class AppRouter extends React.Component {
     const { user, appLoaded } = this.state
 
     const AuthGuardComponent = c => user ? c : () => {
-      window.location.href = '/auth'
+      window.location.href = '/1/2/auth'
       return ''
     }
 
@@ -244,19 +244,19 @@ class AppRouter extends React.Component {
       // Set the directory path if you are deploying in sub-folder
       <Router history={history}>
         <Switch>
-          <AppRoute exact path="/" component={AuthGuardComponent(analyticsDashboard)} />
-          <AppRoute exact path="/products" component={AuthGuardComponent(productsList)} />
-          <AppRoute exact path="/users" component={AuthGuardComponent(usersList)} />
-          <AppRoute path="/transaction" component={AuthGuardComponent(transactionList)} />
-          <AppRoute path="/forms" component={AuthGuardComponent(formsAnswers)} />
-          <AppRoute path="/logs" component={AuthGuardComponent(logsList)} />
-          <AppRoute path="/admins" component={AuthGuardComponent(adminList)} />
-          <AppRoute path="/userEdit/:id" component={AuthGuardComponent(userEdit)} />
-          <AppRoute path="/userAdd" component={AuthGuardComponent(userAdd)} />
-          <AppRoute path="/transactionEdit/:id" component={AuthGuardComponent(transactionEdit)} />
-          <AppRoute path="/transactionAdd" component={AuthGuardComponent(transactionAdd)} />
-          <AppRoute path="/adminEdit" component={AuthGuardComponent(adminEdit)} />
-          <AppRoute path="/auth" component={Login} fullLayout />
+          <AppRoute exact path="/1/2" component={AuthGuardComponent(analyticsDashboard)} />
+          <AppRoute exact path="/1/2/products" component={AuthGuardComponent(productsList)} />
+          <AppRoute exact path="/1/2/users" component={AuthGuardComponent(usersList)} />
+          <AppRoute path="/1/2/transaction" component={AuthGuardComponent(transactionList)} />
+          <AppRoute path="/1/2/forms" component={AuthGuardComponent(formsAnswers)} />
+          <AppRoute path="/1/2/logs" component={AuthGuardComponent(logsList)} />
+          <AppRoute path="/1/2/admins" component={AuthGuardComponent(adminList)} />
+          <AppRoute path="/1/2/userEdit/:id" component={AuthGuardComponent(userEdit)} />
+          <AppRoute path="/1/2/userAdd" component={AuthGuardComponent(userAdd)} />
+          <AppRoute path="/1/2/transactionEdit/:id" component={AuthGuardComponent(transactionEdit)} />
+          <AppRoute path="/1/2/transactionAdd" component={AuthGuardComponent(transactionAdd)} />
+          <AppRoute path="/1/2/adminEdit" component={AuthGuardComponent(adminEdit)} />
+          <AppRoute path="/1/2/auth" component={Login} fullLayout />
 
           <AppRoute
             path="/charts"

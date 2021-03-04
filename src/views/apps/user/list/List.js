@@ -109,6 +109,10 @@ class TransactionList extends React.Component {
                 {params.value.name}
               </div>
             } else if ($name === 'В ПРОЦЕССЕ') {
+              return <div className="badge badge-pill badge-light-primary">
+                {params.value.name}
+              </div>
+            } else {
               return <div className="badge badge-pill badge-light-danger">
                 {params.value.name}
               </div>
@@ -125,7 +129,7 @@ class TransactionList extends React.Component {
         width: 150,
         cellRendererFramework: params => {
           if(params.value) {
-            return <Button.Ripple color="danger" onClick={() => history.push('/transactionEdit/' + params.value)} className="btn-blockmt-2">
+            return <Button.Ripple color="danger" onClick={() => history.push('/1/2/transactionEdit/' + params.value)} className="btn-blockmt-2">
                 Изменить
             </Button.Ripple>
           }
@@ -280,7 +284,7 @@ class TransactionList extends React.Component {
                     <Button.Ripple outline color="primary" className="btn-blockmt-2 mr-1">
                     Корзина
                     </Button.Ripple>
-                    <Button.Ripple onClick={() => history.push('/transactionAdd')} color="primary" className="btn-blockmt-2">
+                    <Button.Ripple onClick={() => history.push('/1/2/transactionAdd')} color="primary" className="btn-blockmt-2">
                     + Добавить заказ
                     </Button.Ripple>
                 </Col>

@@ -230,7 +230,7 @@ class UserAccountTab extends React.Component {
                 <Button.Ripple className="mr-1" color="primary">
                   Сохранить
                 </Button.Ripple>
-                <Button.Ripple onClick={() => history.push('/users')} color="flat-warning">Вернуть</Button.Ripple>
+                <Button.Ripple onClick={() => history.push('/1/2/users')} color="flat-warning">Вернуть</Button.Ripple>
               </Col>
             </Row>
           </Form>
