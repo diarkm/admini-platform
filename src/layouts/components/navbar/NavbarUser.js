@@ -43,7 +43,7 @@ const UserDropdown = props => {
         }}
       >
         <Icon.Power size={14} className="mr-50" />
-        <span className="align-middle">Log Out</span>
+        <span className="align-middle">Выйти</span>
       </DropdownItem>
     </DropdownMenu>
   )
@@ -225,17 +225,17 @@ class NavbarUser extends React.PureComponent {
                 <DropdownMenu right>
                   <DropdownItem
                     tag="a"
-                    onClick={e => context.switchLanguage("en")}
-                  >
-                    <ReactCountryFlag className="country-flag" countryCode="us" svg />
-                    <span className="ml-1">English</span>
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
                     onClick={e => context.switchLanguage("ru")}
                   >
                     <ReactCountryFlag className="country-flag" countryCode="ru" svg />
                     <span className="ml-1">Русский</span>
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={e => context.switchLanguage("en")}
+                  >
+                    <ReactCountryFlag className="country-flag" countryCode="us" svg />
+                    <span className="ml-1">English</span>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -408,7 +408,7 @@ class NavbarUser extends React.PureComponent {
               <span className="user-name text-bold-600">
                 {this.props.userName}
               </span>
-              <span className="user-status">Available</span>
+              <span className="user-status">Администратор</span>
             </div>
             <span data-tour="user">
               <img
