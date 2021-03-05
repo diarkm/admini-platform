@@ -13,6 +13,7 @@ class ApiModule {
       headers: {
         'Admin-Token': this.accessToken,
         Authorization: this.accessToken,
+        'Access-Control-Allow-Origin': window.location.origin
       }
     }
 
