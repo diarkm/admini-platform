@@ -86,7 +86,16 @@ const UserAccountTab = props => {
       name: '#',
       selector: 'id',
       cell: params => {
-        return <Button.Ripple className="my-2" color="danger">
+        return <Button.Ripple onClick={async () => {
+          if(window.confirm('Действительно хотите удалить?')) {
+            let deleteData = await _api.deleteDepositUser(params.id)
+
+            if(deleteData.response) {
+              alert('Депозит успешно удален!')
+              getDeposits()
+            }
+          }
+        }} className="my-2" color="danger">
           Удалить
         </Button.Ripple>
       }
@@ -135,7 +144,16 @@ const UserAccountTab = props => {
       name: '#',
       selector: 'id',
       cell: params => {
-        return <Button.Ripple className="my-2" color="danger">
+        return <Button.Ripple onClick={async () => {
+          if(window.confirm('Действительно хотите удалить?')) {
+            let deleteData = await _api.deleteBonusUser(params.id)
+
+            if(deleteData.response) {
+              alert('Бонус успешно удален!')
+              getBonuses()
+            }
+          }
+        }} className="my-2" color="danger">
           Удалить
         </Button.Ripple>
       }

@@ -57,11 +57,13 @@ class ApiModule {
       })
   }
 
-  async exportLogs (page = 1) {
-    return this.client.post('/admin/logs/export')
+  exportLogs (page = 1) {
+    return window.open(apiURL + '/admin/logs/export?token=' + this.accessToken, '_blank')
+
+    /*return this.client.get('/admin/logs/export')
       .then(response => {
         return response.data
-      })
+      })*/
   }
 
   async updateReqs (wallet, wallet_id) {
@@ -102,6 +104,13 @@ class ApiModule {
       })
   }
 
+  async deleteDepositUser (id) {
+    return this.client.post('/admin/deposit/delete', { id })
+      .then(response => {
+        return response.data
+      })
+  }
+
   async addDepositUser ({ user_id, value }) {
     return this.client.post('/admin/deposits/create', {
       user_id: user_id + '', value
@@ -114,6 +123,13 @@ class ApiModule {
   // Бонусы
   async getBonusesUser (id) {
     return this.client.get('/admin/bonus/get/' + id)
+      .then(response => {
+        return response.data
+      })
+  }
+
+  async deleteBonusUser (id) {
+    return this.client.post('/admin/bonus/delete', { id })
       .then(response => {
         return response.data
       })
