@@ -17,7 +17,7 @@ class ApiModule {
       }
     }
 
-    this.client       = axios.create(cfg)
+    this.client    = axios.create(cfg)
   }
 
   getFormData(values) {
@@ -47,6 +47,23 @@ class ApiModule {
       })
   }
 
+  /**
+   * Логи
+   */
+  async getLogs (page = 1) {
+    return this.client.get('/admin/logs/' + page)
+      .then(response => {
+        return response.data
+      })
+  }
+
+  async exportLogs (page = 1) {
+    return this.client.post('/admin/logs/export')
+      .then(response => {
+        return response.data
+      })
+  }
+
   async updateReqs (wallet, wallet_id) {
     return this.client.post('/admin/users/wallet/edit', {
       wallet, wallet_id
@@ -61,6 +78,70 @@ class ApiModule {
         return response.data
       })
   }
+
+  /**
+   * Получение депозитов и бонусов юзера
+   * @param {*} id
+   * @returns Promise Response
+   */
+
+  // Депозиты
+  async getDepositsUser (id) {
+    return this.client.get('/admin/deposits/' + id)
+      .then(response => {
+        return response.data
+      })
+  }
+
+  async editDepositUser ({ deposit_id, value }) {
+    return this.client.post('/admin/deposits/edit', {
+      deposit_id: deposit_id + '', value
+    })
+      .then(response => {
+        return response.data
+      })
+  }
+
+  async addDepositUser ({ user_id, value }) {
+    return this.client.post('/admin/deposits/create', {
+      user_id: user_id + '', value
+    })
+      .then(response => {
+        return response.data
+      })
+  }
+
+  // Бонусы
+  async getBonusesUser (id) {
+    return this.client.get('/admin/bonus/get/' + id)
+      .then(response => {
+        return response.data
+      })
+  }
+
+  async editBonusUser ({ income_bonus_id, value }) {
+    return this.client.post('/admin/bonus/edit', {
+      income_bonus_id: income_bonus_id + '', value
+    })
+      .then(response => {
+        return response.data
+      })
+  }
+
+  async addBonusUser ({ user_id, value }) {
+    return this.client.post('/admin/bonus/create', {
+      user_id: user_id + '', value
+    })
+      .then(response => {
+        return response.data
+      })
+  }
+
+  /**
+   * Получение информации о юзере
+   * @param {*} id
+   * @returns Promise Response
+   */
 
   async getUser (id) {
     return this.client.get('/admin/users/get/' + id)

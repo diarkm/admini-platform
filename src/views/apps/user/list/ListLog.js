@@ -36,49 +36,11 @@ import { history } from "../../../../history"
 import "../../../../assets/scss/plugins/tables/_agGridStyleOverride.scss"
 import "../../../../assets/scss/pages/users.scss"
 import userImg from "../../../../assets/img/portrait/small/avatar-s-11.jpg"
-
-const data = [
-  {
-    id: "1",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    },
-    date:"23 февраля 2021",
-    changes: "Изменил счет пользователя «Partner1»"
-  },
-  {
-    id: "2",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    },
-    date:"23 февраля 2021",
-    changes: "Изменил товар «Курс по финансовой грамотности»"
-  },
-  {
-    id: "3",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    },
-    date:"23 февраля 2021",
-    changes: "Изменил имя пользователя «Partner2»"
-  },
-  {
-    id: "4",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    },
-    date:"23 февраля 2021",
-    changes: "Изменил платежные реквизиты пользователя «Partner1»"
-  },
-]
+import ApiModule from "../../../../api/ApiModule"
 
 class ListLog extends React.Component {
   state = {
-    rowData: null,
+    rowData: [],
     pageSize: 20,
     isVisible: true,
     reload: false,
@@ -103,53 +65,108 @@ class ListLog extends React.Component {
         headerCheckboxSelection: true
       },
       {
-        headerName: "Логин",
-        field: "username",
+        headerName: "Объект",
+        field: "object",
         filter: true,
         width: 250,
         cellRendererFramework: params => {
           return (
             <div
-              className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/app/user/edit")}
+              className="d-flex align-items-center"
             >
-              <img
-                className="rounded-circle mr-50"
-                src={params.value.avatar}
-                alt=""
-                height="30"
-                width="30"
-              />
-              <span>{params.value.name}</span>
+              <span>{params.value && params.value.login}</span>
             </div>
           )
         }
       },
       {
-        headerName: "Дата",
-        field: "date",
+        headerName: "Субъект",
+        field: "subject",
         filter: true,
-        width: 200
+        width: 250,
+        cellRendererFramework: params => {
+          return (
+            <div
+              className="d-flex align-items-center"
+            >
+              <span>{params.value && params.value.login}</span>
+            </div>
+          )
+        }
       },
       {
-        headerName: "Изменения",
-        field: "changes",
+        headerName: "Описагие",
+        field: "body",
         filter: true,
-        width: 550
+        width: 600
+      },
+      {
+        headerName: "Обновлено",
+        field: "updated_at",
+        filter: true,
+        width: 250
       }
     ]
   }
-/*
-  async componentDidMount() {
-    await axios.get("api/users/list").then(response => {
-      let rowData = response.data
-      this.setState({ rowData })
-    })
+
+  async loadData (page, event) {
+    let data = await new ApiModule().getLogs(page)
+      data = data.result
+
+    /**
+     * PAGINATION
+     */
+    let pageSize = data.collection.length
+
+    if(data.collection) {
+      let newData = this.state.rowData,
+          templateItem = data.collection[0]
+
+      let tempTemplateItem = Object.assign({}, templateItem)
+
+      Object.keys(tempTemplateItem).forEach(itemKey => {
+        if(typeof tempTemplateItem[itemKey] == "string" || typeof tempTemplateItem[itemKey] == "number") {
+          tempTemplateItem[itemKey] = '...'
+        }
+      })
+
+      // получаем текущий виртуальный индекс
+      let currentIndex = (data.page*this.state.pageSize) - this.state.pageSize
+
+      if(page <= 1 && !this.initedRows) {
+        // Создаем липовые данные
+        for(let i = 0; i < data.pages*pageSize; i++) {
+          newData.push(tempTemplateItem)
+        }
+
+        this.initedRows = true
+      }
+
+      let j = 0;
+      for(let i = currentIndex; i < currentIndex+pageSize; i++) {
+        newData[i] = data.collection[j]
+        j++
+      }
+
+      data.collection = newData
+    }
+    /** /PAGINATION */
+
+    if(data) {
+      data = data.collection
+    } else {
+      data = []
+    }
+
+    if(event) {
+      event.api.setRowData(data)
+    } else {
+      this.setState({rowData: data, pageSize})
+    }
   }
-*/
+
 async componentDidMount() {
-  this.setState( {rowData: data} )
-  console.log(this.state.columnDefs)
+  this.loadData(1, null)
 }
 
   onGridReady = params => {
@@ -233,7 +250,10 @@ async componentDidMount() {
                   <h3>Лог изменений системы </h3>
                 </Col>
                 <Col className="d-flex justify-content-end">
-                    <Button.Ripple outline color="primary" className="btn-blockmt-2 mr-1">
+                    <Button.Ripple outline color="primary" className="btn-blockmt-2 mr-1" onClick={async () => {
+                      let exportData = await new ApiModule().exportLogs(1)
+                      console.log(exportData)
+                    }}>
                     Экспорт
                     </Button.Ripple>
                 </Col>
@@ -285,7 +305,7 @@ async componentDidMount() {
                     />
                   </div>
                 </div>
-                {this.state.rowData !== null ? (
+                {this.state.rowData.length ? (
                   <ContextLayout.Consumer>
                     {context => (
                       <AgGridReact
@@ -301,6 +321,10 @@ async componentDidMount() {
                         pagination={true}
                         pivotPanelShow="always"
                         paginationPageSize={pageSize}
+                        onPaginationChanged={event => {
+                          if(event.newPage)
+                            this.loadData(event.api.paginationProxy.currentPage + 1, event)
+                        }}
                         resizable={true}
                         enableRtl={context.state.direction === "rtl"}
                       />

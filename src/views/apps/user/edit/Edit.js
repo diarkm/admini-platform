@@ -16,8 +16,10 @@ class UserEdit extends React.Component {
   async componentDidMount () {
     const { id } = this.props.match.params
 
-    let user = await new ApiModule().getUser(id)
-    let reqs = await new ApiModule().getReqsUser(id)
+    let _apiModule = new ApiModule();
+
+    let user = await _apiModule.getUser(id)
+    let reqs = await _apiModule.getReqsUser(id)
 
     if(user.response && user.user) {
       user.user.reqs = reqs.wallet.length ? reqs.wallet[0] : {
