@@ -194,6 +194,15 @@ class ApiModule {
       })
   }
 
+  async confirmTransaction (transaction_id = 0) {
+    return this.client.post('/admin/transaction/accept', {
+      transaction_id
+    })
+      .then(response => {
+        return response.data
+      })
+  }
+
   async editTransaction (form) {
     return this.client.post('/admin/transaction/edit', form)
       .then(response => {

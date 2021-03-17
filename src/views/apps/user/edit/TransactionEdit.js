@@ -50,6 +50,8 @@ class TransactionEdit extends React.Component {
   render() {
     const trs = this.state.transaction
 
+    let showConfirmed = trs && trs.status_id <= 1
+
     return (
       <Card>
         <CardHeader>
@@ -97,6 +99,20 @@ class TransactionEdit extends React.Component {
                 className="d-flex justify-content-end flex-wrap mt-2"
                 sm="12"
               >
+                {(trs.status_id <= 1 && showConfirmed) &&
+                  <Button.Ripple onClick={async () => {
+                    let trsConfirm = await new ApiModule().confirmTransaction(trs.id)
+
+                    console.log(trsConfirm)
+
+                    if(trsConfirm.response) {
+                      alert('Транзакция успешно подтверждена!')
+                      window.location.reload()
+                    }
+                }} className="mr-1" type={'button'} color="success">
+                  Подтвердить
+                </Button.Ripple>}
+
                 <Button.Ripple className="mr-1" color="primary">
                   Сохранить
                 </Button.Ripple>
