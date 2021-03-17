@@ -65,7 +65,7 @@ class ListLog extends React.Component {
         headerCheckboxSelection: true
       },
       {
-        headerName: "Объект",
+        headerName: "Администратор",
         field: "object",
         filter: true,
         width: 250,
@@ -80,7 +80,7 @@ class ListLog extends React.Component {
         }
       },
       {
-        headerName: "Субъект",
+        headerName: "Пользователь",
         field: "subject",
         filter: true,
         width: 250,
@@ -95,17 +95,22 @@ class ListLog extends React.Component {
         }
       },
       {
-        headerName: "Описагие",
+        headerName: "Описание",
         field: "body",
         filter: true,
         width: 600
       },
       {
-        headerName: "Обновлено",
-        field: "updated_at",
+        headerName: "Дата",
+        field: "created_at",
         filter: true,
-        width: 250
-      }
+        width: 250,
+        cellRendererFramework: params => {
+          let $date = params.value.replace(/\.(.*)/g, '').replace(/\-/g, '.').split(/T|Т/)
+            $date[0] = $date[0].split('.').reverse().join('.')
+          return $date.join(' ')
+        }
+      },
     ]
   }
 

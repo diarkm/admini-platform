@@ -32,31 +32,41 @@ const UserAccountTab = props => {
 
   const getDeposits = async () => {
     let data = await _api.getDepositsUser(user.id)
+
+    data.deposits = data.deposits.filter(item => item.value > 0)
+
     setdeposits(data.deposits)
     setinputDeposit(0)
   }
   const getBonuses = async () => {
     let data = await _api.getBonusesUser(user.id)
+
+    data.income = data.income.filter(item => item.value > 0)
+
     setbonuses(data.income)
     setinputBonus(0)
   }
 
   const addBonus = async () => {
-    let bonusCreate = await _api.addBonusUser({ user_id: user.id, value: inputBonus })
+    if(inputBonus > 0) {
+      let bonusCreate = await _api.addBonusUser({ user_id: user.id, value: inputBonus })
 
-    if(bonusCreate.response)
-      alert('Бонус успешно добавлен!')
+      if(bonusCreate.response)
+        alert('Бонус успешно добавлен!')
 
-    getBonuses()
+      getBonuses()
+    }
   }
 
   const addDeposit = async () => {
-    let depositCreate = await _api.addDepositUser({ user_id: user.id, value: inputDeposit })
+    if(inputDeposit > 0) {
+      let depositCreate = await _api.addDepositUser({ user_id: user.id, value: inputDeposit })
 
-    if(depositCreate.response)
-      alert('Депозит успешно добавлен!')
+      if(depositCreate.response)
+        alert('Депозит успешно добавлен!')
 
-    getDeposits()
+      getDeposits()
+    }
   }
 
   if(!loadData) {
@@ -80,7 +90,12 @@ const UserAccountTab = props => {
     {
       name: "Дата создания",
       selector: "created_at",
-      sortable: true
+      sortable: true,
+      cell: params => {
+        let $date = params.created_at.replace(/\.(.*)/g, '').replace(/\-/g, '.').split(/T|Т/)
+          $date[0] = $date[0].split('.').reverse().join('.')
+        return $date.join(' ')
+      }
     },
     {
       name: '#',
@@ -138,7 +153,12 @@ const UserAccountTab = props => {
     {
       name: "Дата создания",
       selector: "created_at",
-      sortable: true
+      sortable: true,
+      cell: params => {
+        let $date = params.created_at.replace(/\.(.*)/g, '').replace(/\-/g, '.').split(/T|Т/)
+          $date[0] = $date[0].split('.').reverse().join('.')
+        return $date.join(' ')
+      }
     },
     {
       name: '#',
@@ -280,18 +300,18 @@ const UserAccountTab = props => {
               </FormGroup>
             </Col>
 
-            {user.reqs.id > 0 && <Col md="6" sm="12">
+            <Col md="6" sm="12">
               <FormGroup>
                 <Label for="reqs">Реквизиты</Label>
                 <Input
                   type="text"
                   id="reqs"
                   name={'reqs'}
-                  defaultValue={user.reqs.wallet}
+                  defaultValue={(user.reqs && user.reqs.id > 0) && user.reqs.wallet}
                   placeholder="Реквизиты"
                 />
               </FormGroup>
-            </Col>}
+            </Col>
 
             {(user.confirmed <= 0 && showConfirmed) && <Col md="6" sm="12">
               <FormGroup>
@@ -336,7 +356,7 @@ const UserAccountTab = props => {
                   placeholder="Сумма"
                 />
                 </FormGroup>
-                <Button.Ripple onClick={addDeposit} className="mb-2" color="primary">
+                <Button.Ripple disabled={inputDeposit <= 0} onClick={addDeposit} className="mb-2" color="primary">
                   Добавить депозит
                 </Button.Ripple>
               </div>
@@ -376,7 +396,7 @@ const UserAccountTab = props => {
                   placeholder="Сумма"
                 />
                 </FormGroup>
-                <Button.Ripple onClick={addBonus} className="mb-2" color="primary">
+                <Button.Ripple disabled={inputBonus <= 0} onClick={addBonus} className="mb-2" color="primary">
                   Добавить бонус
                 </Button.Ripple>
               </div>
