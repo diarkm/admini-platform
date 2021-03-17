@@ -105,7 +105,7 @@ class ApiModule {
   }
 
   async deleteDepositUser (id) {
-    return this.client.post('/admin/deposit/delete', { id })
+    return this.client.post('/admin/deposits/delete', { id })
       .then(response => {
         return response.data
       })
