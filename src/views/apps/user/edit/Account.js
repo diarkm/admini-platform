@@ -307,7 +307,7 @@ const UserAccountTab = props => {
                   type="text"
                   id="reqs"
                   name={'reqs'}
-                  defaultValue={(user.reqs && user.reqs.id > 0) && user.reqs.wallet}
+                  defaultValue={(user.reqs && user.reqs.id > 0) ? user.reqs.wallet : ''}
                   placeholder="Реквизиты"
                 />
               </FormGroup>
