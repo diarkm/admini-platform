@@ -68,7 +68,15 @@ class ApiModule {
 
   async updateReqs (wallet, wallet_id) {
     return this.client.post('/admin/users/wallet/edit', {
-      wallet, wallet_id
+      wallet, wallet_id: wallet_id+''
+    }).then(response => {
+      return response.data
+    })
+  }
+
+  async addWallet (wallet) {
+    return this.client.post('/user/wallet/add', {
+      wallet
     }).then(response => {
       return response.data
     })

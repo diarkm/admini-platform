@@ -30,6 +30,8 @@ const UserAccountTab = props => {
 
   const { user, updateUser } = props
 
+  console.log(user)
+
   const getDeposits = async () => {
     let data = await _api.getDepositsUser(user.id)
 
@@ -209,13 +211,20 @@ const UserAccountTab = props => {
         </Media>
       </Col>
       <Col sm="12">
-        <Form onSubmit={e => {
+        <Form onSubmit={async (e) => {
           e.preventDefault()
           let $form = e.target
 
           if($form.reqs) {
-            let reqs = $form.reqs.value
-            new ApiModule().updateReqs(reqs, user.reqs.id)
+            let reqs = $form.reqs.value,
+              reqs_id = user.reqs.id
+
+            if(reqs_id <= 0) {
+              let wallet = await new ApiModule().addWallet(reqs)
+              console.log(wallet)
+            }
+
+            await new ApiModule().updateReqs(reqs, reqs_id)
           }
 
           updateUser($form)
