@@ -30,8 +30,6 @@ const UserAccountTab = props => {
 
   const { user, updateUser } = props
 
-  console.log(user)
-
   const getDeposits = async () => {
     let data = await _api.getDepositsUser(user.id)
 
@@ -220,7 +218,7 @@ const UserAccountTab = props => {
               reqs_id = user.reqs.id
 
             if(reqs_id <= 0) {
-              let wallet = await new ApiModule().addWallet(reqs)
+              let wallet = await new ApiModule().addWallet(reqs, user.id+'')
               console.log(wallet)
             }
 

@@ -74,9 +74,9 @@ class ApiModule {
     })
   }
 
-  async addWallet (wallet) {
-    return this.client.post('/user/wallet/add', {
-      wallet
+  async addWallet (wallet, user_id = 0) {
+    return this.client.post('/admin/users/wallet/add', {
+      wallet, user_id
     }).then(response => {
       return response.data
     })
