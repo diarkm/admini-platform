@@ -218,8 +218,10 @@ const UserAccountTab = props => {
               reqs_id = user.reqs.id
 
             if(reqs_id <= 0) {
-              let wallet = await new ApiModule().addWallet(reqs, user.id+'')
-              console.log(wallet)
+              let wallet = await new ApiModule().addWallet(reqs, user.id)
+
+              if(wallet.wallet)
+                reqs_id = wallet.wallet.id
             }
 
             await new ApiModule().updateReqs(reqs, reqs_id)
