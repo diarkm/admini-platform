@@ -240,6 +240,17 @@ class ApiModule {
         return response.data
       })
   }
+  /**
+   * Получение информации о Админов
+   * @param {*} id
+   * @returns Promise Response
+   */
+  async getAdmins () {
+    return this.client.get('/admin/account/')
+      .then(response => {
+        return response.data
+      }).catch((err)=> console.log(err+ ' Admins'))
+  }
 
   handleResponseError(response) {
     throw new Error("HTTP error, status = " + response.status)

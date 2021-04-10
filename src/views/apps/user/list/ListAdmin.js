@@ -32,43 +32,13 @@ import {
   X
 } from "react-feather"
 import classnames from "classnames"
+
 import { history } from "../../../../history"
 import "../../../../assets/scss/plugins/tables/_agGridStyleOverride.scss"
 import "../../../../assets/scss/pages/users.scss"
 import userImg from "../../../../assets/img/portrait/small/avatar-s-11.jpg"
+import ApiModule from "../../../../api/ApiModule";
 
-const data = [
-  {
-    id: "1",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    },
-    email: "kundakbaev.d@gmail.com",
-    role: "Главный администратор",
-    status: "Активен"
-  },
-  {
-    id: "2",
-    username: {
-      avatar: userImg,
-      name: 'Rustem Kozhabayev'
-    },
-    email: "rus.k.1996@gmail.com",
-    role: "Менеджер",
-    status: "Неактивен"
-  },
-  {
-    id: "3",
-    username: {
-      avatar: userImg,
-      name: 'Diar Kundakbaev'
-    },
-    email: "maxmail0000@gmail.com",
-    role: "Менеджер",
-    status: "Активен"
-  }
-]
 
 class ListAdmin extends React.Component {
   state = {
@@ -159,8 +129,12 @@ class ListAdmin extends React.Component {
   }
 */
 async componentDidMount() {
-  this.setState( {rowData: data} )
-  console.log(this.state.columnDefs)
+  const api = new ApiModule();
+  api.getAdmins()
+    .then((data)=>{
+        console.log(data);
+        this.setState( {rowData: data} )
+    })
 }
 
   onGridReady = params => {
