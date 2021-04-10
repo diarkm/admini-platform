@@ -43,7 +43,7 @@ class TransactionEdit extends React.Component {
     let trs = await new ApiModule().editTransaction($form)
 
     if(trs.response) {
-      alert('Транзакция успешно обновлена')
+      alert('Транзакция успешно обновлена!')
     }
   }
 
@@ -99,8 +99,7 @@ class TransactionEdit extends React.Component {
                 className="d-flex justify-content-end flex-wrap mt-2"
                 sm="12"
               >
-                {(trs.status_id <= 1 && showConfirmed) &&
-                  <Button.Ripple onClick={async () => {
+                {(trs.status_id <= 1 && showConfirmed) ? <Button.Ripple onClick={async () => {
                     let trsConfirm = await new ApiModule().confirmTransaction(trs.id)
 
                     console.log(trsConfirm)
@@ -109,8 +108,10 @@ class TransactionEdit extends React.Component {
                       alert('Транзакция успешно подтверждена!')
                       window.location.reload()
                     }
-                }} className="mr-1" type={'button'} color="success">
+                }} className="mr-1" type={'button'} color="primary">
                   Подтвердить
+                </Button.Ripple> : <Button.Ripple className="mr-1" type={'button'} color="success">
+                  Одобрено
                 </Button.Ripple>}
 
                 <Button.Ripple className="mr-1" color="primary">
