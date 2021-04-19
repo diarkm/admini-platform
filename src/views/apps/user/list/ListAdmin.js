@@ -218,7 +218,7 @@ async componentDidMount() {
                   <h3>Администраторы</h3>
                 </Col>
                 <Col className="d-flex justify-content-end">
-                    <Button.Ripple color="primary" className="btn-blockmt-2 mr-1">
+                    <Button.Ripple color="primary" className="btn-blockmt-2 mr-1" onClick={() => {history.push('/adminAdd')}}>
                     Добавить администратора
                     </Button.Ripple>
                 </Col>

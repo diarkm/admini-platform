@@ -18,6 +18,7 @@ const transactionList = lazy(() => import("./views/apps/user/list/List"))
 const userEdit = lazy(() => import("./views/apps/user/edit/Edit"))
 const userAdd = lazy(() => import("./views/apps/user/add/User"))
 const adminEdit = lazy(() => import("./views/apps/user/edit/AdminEdit"))
+const adminAdd = lazy(() => import("./views/apps/user/edit/AdminAdd"))
 
 const transactionEdit = lazy(() => import("./views/apps/user/edit/TransactionEdit"))
 const transactionAdd = lazy(() => import("./views/apps/user/add/Transaction"))
@@ -256,6 +257,7 @@ class AppRouter extends React.Component {
           <AppRoute path="/transactionEdit/:id" component={AuthGuardComponent(transactionEdit)} />
           <AppRoute path="/transactionAdd" component={AuthGuardComponent(transactionAdd)} />
           <AppRoute path="/adminEdit" component={AuthGuardComponent(adminEdit)} />
+          <AppRoute path="/adminAdd" component={AuthGuardComponent(adminAdd)} />
           <AppRoute path="/auth" component={Login} fullLayout />
 
           <AppRoute
