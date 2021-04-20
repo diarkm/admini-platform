@@ -16,7 +16,9 @@ import ApiModule from "../../../../api/ApiModule";
 import {history} from "../../../../history";
 
 const roleOptions = [
+/*
   {value: "manager", label: "Менеджер"},
+*/
   {value: "admin", label: "Главный администратор"}
 ]
 

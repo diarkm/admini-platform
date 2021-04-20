@@ -15,7 +15,9 @@ import Select from "react-select"
 import ApiModule from "../../../../api/ApiModule";
 
 const roleOptions = [
+/*
   {label: "Менеджер", value: 'manager'},
+*/
   {label: "Главный администратор", value: 'admin'}
 ]
 
