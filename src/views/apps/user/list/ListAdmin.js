@@ -64,7 +64,17 @@ class ListAdmin extends React.Component {
         filter: true,
         checkboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
-        headerCheckboxSelection: true
+        headerCheckboxSelection: true,
+        cellRendererFramework: params => {
+          return (
+            <div
+              className="d-flex align-items-center cursor-pointer"
+              onClick={() => history.push(`/adminEdit/${params.value}`)}
+            >
+              <span>{params.value}</span>
+            </div>
+          )
+        }
       },
       {
         headerName: "Логин",
@@ -72,21 +82,8 @@ class ListAdmin extends React.Component {
         filter: true,
         width: 250,
         cellRendererFramework: params => {
-          console.log(params);
           return (
-            <div
-              className="d-flex align-items-center cursor-pointer"
-              onClick={() => history.push("/adminEdit")}
-            >
-{/*              <img
-                className="rounded-circle mr-50"
-                src={params.value.avatar}
-                alt=""
-                height="30"
-                width="30"
-              />*/}
               <span>{params.value}</span>
-            </div>
           )
         }
       },
@@ -98,7 +95,7 @@ class ListAdmin extends React.Component {
       },
       {
         headerName: "Роль",
-        field: "role",
+        field: "email",
         filter: true,
         width: 250
       },

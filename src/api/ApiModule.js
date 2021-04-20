@@ -253,7 +253,7 @@ class ApiModule {
   }
 
   async createAdmin (form) {
-    return this.client.post('/admin/account/create', form)
+    return this.client.post('/admin/account/create/', form)
       .then(response => {
         return response.data
       }).catch((err)=> console.log(err+ ' Admin create'))
@@ -267,10 +267,10 @@ class ApiModule {
   }
 
   async deleteAdmin (id) {
-    return this.client.post(`/admin/delete/${id}`)
+    return this.client.post(`/admin/delete/${id}/`)
       .then(response => {
         return response.data
-      }).catch((err)=> console.log(err+ ' Admin delete'))
+      }).catch((err)=> console.log(err))
   }
 
   handleResponseError(response) {
