@@ -11,15 +11,30 @@ import {
   FormGroup
 } from "reactstrap"
 import Select from "react-select"
+import ApiModule from "../../../../api/ApiModule";
 
 const roleOptions = [
-  { value: "1", label: "Менеджер" },
-  { value: "2", label: "Главный администратор" }
+  { value: "1", label: "Менеджер", role:"manager" },
+  { value: "2", label: "Главный администратор", role:"admin" }
 ]
 
 class AdminEdit extends React.Component {
   state = {
     basicPicker : new Date()
+  }
+ componentDidMount() {
+    const { id } = this.props.match.params;
+    this.setState(() => ({ adminId: id }));
+  }
+  async updateUser (data) {
+    data = new FormData(data)
+
+    const api = new ApiModule();
+    api.editAdmin(data)
+      .then((res)=>{
+        console.log(res);
+        alert('Администратор успешно обновлен!')
+      }).catch((err) => alert(err.errors))
   }
   render() {
 
@@ -30,7 +45,7 @@ class AdminEdit extends React.Component {
         </CardHeader>
         <CardBody>
           <Row>
-            <Col md="6" sm="12">
+{/*            <Col md="6" sm="12">
                 <FormGroup>
                   <Label for="password">Пароль</Label>
                   <Input
@@ -39,7 +54,7 @@ class AdminEdit extends React.Component {
                     placeholder="Пароль"
                   />
                 </FormGroup>
-            </Col>
+            </Col>*/}
             <Col sm="12">
               <Select
                 className="React"
@@ -56,7 +71,7 @@ class AdminEdit extends React.Component {
                 <Button.Ripple className="mr-1" color="primary">
                   Сохранить
                 </Button.Ripple>
-                <Button.Ripple color="flat-warning">Вернуть</Button.Ripple>
+                <Button.Ripple color="flat-warning">Удалить</Button.Ripple>
               </Col>
           </Row>
         </CardBody>

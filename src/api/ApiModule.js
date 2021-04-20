@@ -246,10 +246,31 @@ class ApiModule {
    * @returns Promise Response
    */
   async getAdmins () {
-    return this.client.get('/admin/account/')
+    return this.client.get('/admin/account')
       .then(response => {
         return response.data
       }).catch((err)=> console.log(err+ ' Admins'))
+  }
+
+  async createAdmin (form) {
+    return this.client.post('/admin/account/create', form)
+      .then(response => {
+        return response.data
+      }).catch((err)=> console.log(err+ ' Admin create'))
+  }
+
+  async editAdmin (form) {
+    return this.client.post('/admin/account/edit', form)
+      .then(response => {
+        return response.data
+      }).catch((err)=> console.log(err+ ' Admin edit'))
+  }
+
+  async deleteAdmin (id) {
+    return this.client.post(`/admin/delete/${id}`)
+      .then(response => {
+        return response.data
+      }).catch((err)=> console.log(err+ ' Admin delete'))
   }
 
   handleResponseError(response) {
